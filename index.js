@@ -7,9 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 const port = process.env.PORT || 3000;
-const listener = app.listen(port, () => {
-  console.log("Server has started on port: " + listener.address().port);
-});
+
 
 app.get("/", (req, res) => {
   console.log("Got a GET request for the homepage");
@@ -17,7 +15,7 @@ app.get("/", (req, res) => {
 });
 
 // Create a new user. Do SQL statement
-app.get("/api/getallLeads", async (req, res) => {
+app.get("/api/getAllLeads", async (req, res) => {
   try {
     console.log("Getting all leads");
     const allLeads = await pool.query("SELECT * FROM Lead");
@@ -88,4 +86,8 @@ app.delete("/api/deleteLead/:id", async (req, res) => {
   } catch (err) {
     console.error(err);
   }
+});
+
+const listener = app.listen(port, () => {
+  console.log("Server has started on port: " + listener.address().port);
 });
