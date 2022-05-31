@@ -6,7 +6,8 @@ const pool = require("./db");
 app.use(cors());
 app.use(express.json());
 
-const listener = app.listen(5000, () => {
+const port = process.env.PORT || 3000;
+const listener = app.listen(port, () => {
   console.log("Server has started on port: " + listener.address().port);
 });
 
