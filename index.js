@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 // Create a new user. Do SQL statement
 app.get("/api/getallLeads", async (req, res) => {
   try {
+    console.log("Getting all leads");
     const allLeads = await pool.query("SELECT * FROM Lead");
     console.log("Succesfully got all leads");
     res.json(allLeads.rows);
@@ -29,6 +30,7 @@ app.get("/api/getallLeads", async (req, res) => {
 
 app.get("/api/getAllEmployees", async (req, res) => {
   try {
+    console.log("Getting all employees");
     const allEmployees = await pool.query("SELECT * FROM Employee");
     res.json(allEmployees.rows);
   } catch (err) {
@@ -39,6 +41,7 @@ app.get("/api/getAllEmployees", async (req, res) => {
 app.post("/api/newLead", async (req, res) => {
   console.log(req.body);
   try {
+    console.log("adding new lead");
     const {
       firstName,
       lastName,
@@ -76,6 +79,7 @@ app.post("/api/newLead", async (req, res) => {
 
 app.delete("/api/deleteLead/:id", async (req, res) => {
   try {
+    console.log("Deleting lead");
     const { id } = req.params;
     const deletedLead = await pool.query("DELETE FROM Lead WHERE id = $1", [
       id,
