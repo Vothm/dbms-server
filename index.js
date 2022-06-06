@@ -35,6 +35,74 @@ app.get("/api/getAllEmployees", async (req, res) => {
   }
 });
 
+app.get("/api/getVinceLeads", async (req, res) => {
+  try {
+    console.log("Getting Vince's leads");
+    const vinceLeads = await pool.query(
+      `SELECT lead.id, lead.firstname, lead.lastname, 
+      lead.phonenumber, lead.email, lead.youth, lead.leadmanagerid, 
+      lead.referredby, lead.joingym, lead.classregistration, lead.notes
+      FROM lead
+      JOIN employee ON lead.leadmanagerid = employee.id
+      WHERE employee.id = 4`
+    );
+    res.json(vinceLeads.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/api/getSierraLeads", async (req, res) => {
+  try {
+    console.log("Getting Sierra's leads");
+    const sierraLeads = await pool.query(
+      `SELECT lead.id, lead.firstname, lead.lastname, 
+      lead.phonenumber, lead.email, lead.youth, lead.leadmanagerid, 
+      lead.referredby, lead.joingym, lead.classregistration, lead.notes
+      FROM lead
+      JOIN employee ON lead.leadmanagerid = employee.id
+      WHERE employee.id = 3`
+    );
+    res.json(sierraLeads.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/api/getAlexLeads", async (req, res) => {
+  try {
+    console.log("Getting Alex's leads");
+    const alexLeads = await pool.query(
+      `SELECT lead.id, lead.firstname, lead.lastname, 
+      lead.phonenumber, lead.email, lead.youth, lead.leadmanagerid, 
+      lead.referredby, lead.joingym, lead.classregistration, lead.notes
+      FROM lead
+      JOIN employee ON lead.leadmanagerid = employee.id
+      WHERE employee.id = 2`
+    );
+    res.json(alexLeads.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/api/getAboudLeads", async (req, res) => {
+  try {
+    console.log("Getting Aboud's leads");
+    const aboudLeads = await pool.query(
+      `SELECT lead.id, lead.firstname, lead.lastname, 
+      lead.phonenumber, lead.email, lead.youth, lead.leadmanagerid, 
+      lead.referredby, lead.joingym, lead.classregistration, lead.notes
+      FROM lead
+      JOIN employee ON lead.leadmanagerid = employee.id
+      WHERE employee.id = 1`
+    );
+    res.json(aboudLeads.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 app.post("/api/newLead", async (req, res) => {
   console.log(req.body);
   try {
@@ -54,7 +122,10 @@ app.post("/api/newLead", async (req, res) => {
 
     // console.log(req.body);
     const newLead = await pool.query(
-      "INSERT INTO Lead (firstName, lastName, phoneNumber, email, youth, leadManagerID, referredBy, joinGym, classRegistration, notes) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *;",
+      `INSERT INTO Lead (firstName, lastName, phoneNumber, 
+        email, youth, leadManagerID, referredBy, 
+        joinGym, classRegistration, notes) 
+      values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *;`,
       [
         firstName,
         lastName,
@@ -107,7 +178,9 @@ app.put("/api/updateLead/:id", async (req, res) => {
     console.log(req.body);
 
     const updatedLead = await pool.query(
-      "UPDATE Lead SET firstName = $1, lastName = $2, phoneNumber = $3, email = $4, youth = $5, leadManagerID = $6, referredBy = $7, joinGym = $8, classRegistration = $9, notes = $10 WHERE id = $11 RETURNING *;",
+      `UPDATE Lead SET firstName = $1, lastName = $2, phoneNumber = $3, email = $4, 
+      youth = $5, leadManagerID = $6, referredBy = $7, joinGym = $8, 
+      classRegistration = $9, notes = $10 WHERE id = $11 RETURNING *;`,
       [
         firstName,
         lastName,
