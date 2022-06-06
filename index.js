@@ -177,24 +177,47 @@ app.put("/api/updateLead/:id", async (req, res) => {
 
     console.log(req.body);
 
-    const updatedLead = await pool.query(
-      `UPDATE Lead SET firstName = $1, lastName = $2, phoneNumber = $3, email = $4, 
+    let updatedLead;
+
+    if (email) {
+      updatedLead = await pool.query(
+        `UPDATE Lead SET firstName = $1, lastName = $2, phoneNumber = $3, email = $4, 
       youth = $5, leadManagerID = $6, referredBy = $7, joinGym = $8, 
       classRegistration = $9, notes = $10 WHERE id = $11 RETURNING *;`,
-      [
-        firstName,
-        lastName,
-        phoneNumber,
-        email,
-        youth,
-        leadManagerID,
-        referredBy,
-        joinGym,
-        classRegistration,
-        notes,
-        id,
-      ]
-    );
+        [
+          firstName,
+          lastName,
+          phoneNumber,
+          email,
+          youth,
+          leadManagerID,
+          referredBy,
+          joinGym,
+          classRegistration,
+          notes,
+          id,
+        ]
+      );
+    } else {
+      updatedLead = await pool.query(
+        `UPDATE Lead SET firstName = $1, lastName = $2, phoneNumber = $3, 
+      youth = $4, leadManagerID = $5, referredBy = $6, joinGym = $7, 
+      classRegistration = $8, notes = $9 WHERE id = $10 RETURNING *;`,
+        [
+          firstName,
+          lastName,
+          phoneNumber,
+          youth,
+          leadManagerID,
+          referredBy,
+          joinGym,
+          classRegistration,
+          notes,
+          id,
+        ]
+      );
+    }
+
     res.json(updatedLead.rows[0]);
   } catch (err) {
     console.error(err);
