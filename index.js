@@ -104,6 +104,8 @@ app.put("/api/updateLead/:id", async (req, res) => {
       notes,
     } = req.body;
 
+    console.log(req.body);
+
     const updatedLead = await pool.query(
       "UPDATE Lead SET firstName = $1, lastName = $2, phoneNumber = $3, email = $4, youth = $5, leadManagerID = $6, referredBy = $7, joinGym = $8, classRegistration = $9, notes = $10 WHERE id = $11 RETURNING *;",
       [
