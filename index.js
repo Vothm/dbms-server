@@ -8,7 +8,6 @@ app.use(express.json());
 
 const port = process.env.PORT || 3000;
 
-
 app.get("/", (req, res) => {
   console.log("Got a GET request for the homepage");
   res.status(200).send("Hello World");
@@ -83,6 +82,45 @@ app.delete("/api/deleteLead/:id", async (req, res) => {
       id,
     ]);
     res.json(deletedLead.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.put("/api/updateLead/:id", async (req, res) => {
+  try {
+    console.log("Updating lead");
+    const { id } = req.params;
+    const {
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      youth,
+      leadManagerID,
+      referredBy,
+      joinGym,
+      classRegistration,
+      notes,
+    } = req.body;
+
+    const updatedLead = await pool.query(
+      "UPDATE Lead SET firstName = $1, lastName = $2, phoneNumber = $3, email = $4, youth = $5, leadManagerID = $6, referredBy = $7, joinGym = $8, classRegistration = $9, notes = $10 WHERE id = $11 RETURNING *;",
+      [
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        youth,
+        leadManagerID,
+        referredBy,
+        joinGym,
+        classRegistration,
+        notes,
+        id,
+      ]
+    );
+    res.json(updatedLead.rows[0]);
   } catch (err) {
     console.error(err);
   }
